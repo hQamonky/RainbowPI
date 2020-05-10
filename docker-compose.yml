@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  rainbow-pi:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 8093:8080

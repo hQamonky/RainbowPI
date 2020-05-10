@@ -2,8 +2,10 @@ import json
 
 import markdown
 import os
-import pigpio
+# import pigpio
 import atexit
+import RPi.GPIO as GPIO
+# from RPi import GPIO
 
 # Import the framework
 from flask import Flask
@@ -19,7 +21,13 @@ RED = 17
 GREEN = 22
 BLUE = 24
 
-pi = pigpio.pi()
+# Initiate GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(RED, GPIO.OUT)
+GPIO.setup(GREEN, GPIO.OUT)
+GPIO.setup(BLUE, GPIO.OUT)
+
+# pi = pigpio.pi()
 
 
 def save_rgb(r, g, b):
@@ -67,24 +75,30 @@ def save_blue(b):
 
 
 def set_rgb(r, g, b):
-    pi.set_PWM_dutycycle(RED, int(r))
-    pi.set_PWM_dutycycle(GREEN, int(g))
-    pi.set_PWM_dutycycle(BLUE, int(b))
+    # pi.set_PWM_dutycycle(RED, int(r))
+    # pi.set_PWM_dutycycle(GREEN, int(g))
+    # pi.set_PWM_dutycycle(BLUE, int(b))
+    GPIO.output(RED, int(r))
+    GPIO.output(GREEN, int(g))
+    GPIO.output(BLUE, int(b))
     save_rgb(r, g, b)
 
 
 def set_red(r):
-    pi.set_PWM_dutycycle(RED, int(r))
+    # pi.set_PWM_dutycycle(RED, int(r))
+    GPIO.output(RED, int(r))
     save_red(r)
 
 
 def set_green(g):
-    pi.set_PWM_dutycycle(GREEN, int(g))
+    # pi.set_PWM_dutycycle(GREEN, int(g))
+    GPIO.output(GREEN, int(g))
     save_green(g)
 
 
 def set_blue(b):
-    pi.set_PWM_dutycycle(BLUE, int(b))
+    # pi.set_PWM_dutycycle(BLUE, int(b))
+    GPIO.output(BLUE, int(b))
     save_blue(b)
 
 
@@ -94,10 +108,13 @@ def turn_on():
 
 
 def turn_off():
-    pi.set_PWM_dutycycle(RED, 0)
-    pi.set_PWM_dutycycle(GREEN, 0)
-    pi.set_PWM_dutycycle(BLUE, 0)
-    pi.stop()
+    # pi.set_PWM_dutycycle(RED, 0)
+    # pi.set_PWM_dutycycle(GREEN, 0)
+    # pi.set_PWM_dutycycle(BLUE, 0)
+    GPIO.output(RED, 0)
+    GPIO.output(GREEN, 0)
+    GPIO.output(BLUE, 0)
+    # pi.stop()
 
 
 atexit.register(lambda: turn_off())

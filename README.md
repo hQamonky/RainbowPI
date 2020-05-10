@@ -32,7 +32,7 @@ Clone the RainbowPI project:
 ## 2. Build the docker container
 Run the commands:  
 `docker build --no-cache -t qmk_rainbowpi ~/qmk/RainbowPI`  
-`docker run -p 8093:8080 -v ~/qmk/RainbowPI:/usr/src/app -d --name qmk_rainbowpi qmk_rainbowpi`  
+`docker run -p 8093:8080 -v ~/qmk/RainbowPI:/usr/src/app -d --name qmk_rainbowpi --device /dev/gpiomem qmk_rainbowpi`  
 The container should now be up and running.  
 You can test it by running `curl 127.0.0.1:8093/`. This should display the content of the 'API User Guide.md' file in a html format.  
 ## 3. Make the container run at startup

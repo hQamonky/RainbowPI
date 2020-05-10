@@ -111,10 +111,11 @@ def turn_off():
     # pi.set_PWM_dutycycle(RED, 0)
     # pi.set_PWM_dutycycle(GREEN, 0)
     # pi.set_PWM_dutycycle(BLUE, 0)
+    # pi.stop()
     GPIO.output(RED, 0)
     GPIO.output(GREEN, 0)
     GPIO.output(BLUE, 0)
-    # pi.stop()
+    GPIO.cleanup()
 
 
 atexit.register(lambda: turn_off())

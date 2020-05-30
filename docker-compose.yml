@@ -5,5 +5,7 @@ services:
     build: .
     volumes:
       - .:/usr/src/app
+    devices:
+      /dev/gpiomem
     ports:
       - 8093:8080

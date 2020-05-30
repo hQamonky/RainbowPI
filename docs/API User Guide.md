@@ -8,6 +8,26 @@ The values always go from 0 to 255.
 ### Display this document
 - `/`  
 
+### Turn on
+- `/on`  
+
+#### GET request  
+Turn the LED strip on. The color will be the last color that was set. If the last color was 0,0,0 nothing will happen.    
+*response*  
+``` json
+{
+    "red": "255",
+    "green": "255",
+    "blue": "255"
+}
+```
+
+### Turn off
+- `/off`  
+
+#### GET request  
+Turn the LED strip off.  
+
 ### Handle RGB color using json
 - `/rgb`  
 

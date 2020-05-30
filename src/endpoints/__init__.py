@@ -2,10 +2,8 @@ import json
 
 import markdown
 import os
-# import pigpio
 import atexit
 import RPi.GPIO as GPIO
-# from RPi import GPIO
 
 # Import the framework
 from flask import Flask
@@ -26,8 +24,6 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(RED, GPIO.OUT)
 GPIO.setup(GREEN, GPIO.OUT)
 GPIO.setup(BLUE, GPIO.OUT)
-
-# pi = pigpio.pi()
 
 
 def save_rgb(r, g, b):
@@ -75,9 +71,6 @@ def save_blue(b):
 
 
 def set_rgb(r, g, b):
-    # pi.set_PWM_dutycycle(RED, int(r))
-    # pi.set_PWM_dutycycle(GREEN, int(g))
-    # pi.set_PWM_dutycycle(BLUE, int(b))
     GPIO.output(RED, int(r))
     GPIO.output(GREEN, int(g))
     GPIO.output(BLUE, int(b))
@@ -85,19 +78,16 @@ def set_rgb(r, g, b):
 
 
 def set_red(r):
-    # pi.set_PWM_dutycycle(RED, int(r))
     GPIO.output(RED, int(r))
     save_red(r)
 
 
 def set_green(g):
-    # pi.set_PWM_dutycycle(GREEN, int(g))
     GPIO.output(GREEN, int(g))
     save_green(g)
 
 
 def set_blue(b):
-    # pi.set_PWM_dutycycle(BLUE, int(b))
     GPIO.output(BLUE, int(b))
     save_blue(b)
 
@@ -108,10 +98,6 @@ def turn_on():
 
 
 def turn_off():
-    # pi.set_PWM_dutycycle(RED, 0)
-    # pi.set_PWM_dutycycle(GREEN, 0)
-    # pi.set_PWM_dutycycle(BLUE, 0)
-    # pi.stop()
     GPIO.output(RED, 0)
     GPIO.output(GREEN, 0)
     GPIO.output(BLUE, 0)
@@ -137,10 +123,28 @@ def index():
         return markdown.markdown(content)
 
 
+class On(Resource):
+    @staticmethod
+    def get():
+        turn_on()
+        rgb = get_rgb()
+        return {"red": rgb['red'], "green": rgb['green'], "blue": rgb['blue']}
+
+
+class Off(Resource):
+    @staticmethod
+    def get():
+        GPIO.output(RED, 0)
+        GPIO.output(GREEN, 0)
+        GPIO.output(BLUE, 0)
+        return "Turned off"
+
+
 class RGB(Resource):
     @staticmethod
     def get():
-        return
+        rgb = get_rgb()
+        return {"red": rgb['red'], "green": rgb['green'], "blue": rgb['blue']}
 
     @staticmethod
     def post():
@@ -192,6 +196,8 @@ class SetBlue(Resource):
         return get_rgb()
 
 
+api.add_resource(On, '/on')
+api.add_resource(Off, '/off')
 api.add_resource(RGB, '/rgb')
 api.add_resource(GetRed, '/red')
 api.add_resource(SetRed, '/red/<value>')
